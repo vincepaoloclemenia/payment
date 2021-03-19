@@ -26,3 +26,12 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+# Setup
+
+Just hit 
+* bundle install
+* rails db:create db:migrate
+
+# Interface
+
+I have only created an API and so the testing could be done by using Postman or any of the same platform.
