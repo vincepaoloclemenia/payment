@@ -32,6 +32,8 @@ Just hit
 * bundle install
 * rails db:create db:migrate
 
-# Interface
+# Testing
 
-I have only created an API and so the testing could be done by using Postman or any of the same platform.
+I have only created an API and so the testing could be done by using Postman or any of the same platform. This has been done through TDD approach which means you may also run the test by executing `RAILS_ENV=test bundle exec rspec spec/requests/reservations_controller_spec.rb`
+
+I used the two payloads given from the example to write test cases.
