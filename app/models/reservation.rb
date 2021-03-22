@@ -17,6 +17,10 @@
 #   t.index ["user_id"], name: "index_reservations_on_user_id"
 # end
 class Reservation < ApplicationRecord
+
+  UNEXPECTED_RESERVATION_KEYS = ['user_id', 'created_at', 'updated_at'].freeze
+  RESERVATION_EXPECTED_ATTRIBUTES = (self.column_names - UNEXPECTED_RESERVATION_KEYS).sort.freeze
+
   belongs_to :user
   has_many :reservation_contacts
   accepts_nested_attributes_for :reservation_contacts

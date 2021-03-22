@@ -1,33 +1,31 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
-   # For User
-   FIRST_NAME_PROBABLE_KEYS = ['first_name', 'guest_first_name'] # Can just add more here
-   LAST_NAME_PROBABLE_KEYS = ['guest_last_name']
-   EMAIL_PROBABLE_KEYS = ['guest_email']
-   USER_EXPECTED_ATTRIBUTES = ['email', 'first_name', 'last_name'].sort.freeze
- 
-   # For Reservation
-   HOST_CURRENCY_PROBABLE_KEYS = ['currency']
-   NUMBER_OF_INFANT_PROBABLE_KEYS = ['infants']
-   NUMBER_OF_CHILDREN_PROBABLE_KEYS = ['children']
-   NUMBER_OF_ADULTS_PROBABLE_KEYS = ['adults']
-   EXPECTED_PAYOUT_AMOUNT_PROBABLE_KEYS = ['payout_price', 'expected_payout_amount']
-   SECURITY_PRICE_PROBABLE_KEYS = ['security_price']
-   TOTAL_PAID_AMOUNT_ACCURATE_PROBABLE_KEYS = ['total_price']
-   STATUS_PROBABLE_KEYS = ['status_type']
-   UNEXPECTED_RESERVATION_KEYS = ['user_id', 'created_at', 'updated_at'].freeze
-   RESERVATION_EXPECTED_ATTRIBUTES = (Reservation.columns.map(&:name) - UNEXPECTED_RESERVATION_KEYS).sort.freeze
- 
-   # Phone number
-   PHONE_NUMBER_PROBABLE_KEYS = ['phone', 'guest_phone_numbers']
+  # For User
+  FIRST_NAME_PROBABLE_KEYS = ['first_name', 'guest_first_name'] # Can just add more here
+  LAST_NAME_PROBABLE_KEYS = ['guest_last_name']
+  EMAIL_PROBABLE_KEYS = ['guest_email']
+  USER_EXPECTED_ATTRIBUTES = ['email', 'first_name', 'last_name'].sort.freeze
+
+  # For Reservation
+  HOST_CURRENCY_PROBABLE_KEYS = ['currency']
+  NUMBER_OF_INFANT_PROBABLE_KEYS = ['infants']
+  NUMBER_OF_CHILDREN_PROBABLE_KEYS = ['children']
+  NUMBER_OF_ADULTS_PROBABLE_KEYS = ['adults']
+  EXPECTED_PAYOUT_AMOUNT_PROBABLE_KEYS = ['payout_price', 'expected_payout_amount']
+  SECURITY_PRICE_PROBABLE_KEYS = ['security_price']
+  TOTAL_PAID_AMOUNT_ACCURATE_PROBABLE_KEYS = ['total_price']
+  STATUS_PROBABLE_KEYS = ['status_type']
+  
+  # Phone number
+  PHONE_NUMBER_PROBABLE_KEYS = ['phone', 'guest_phone_numbers']
 
   def self.user_and_reservation_attribute_builder(attributes_hash:, user_hash: {}, reservation_hash: {}, phone_numbers: { reservation_contacts_attributes: [] })
     user_hash.merge!(attributes_hash.slice(*USER_EXPECTED_ATTRIBUTES))
-    reservation_hash.merge!(attributes_hash.slice(*RESERVATION_EXPECTED_ATTRIBUTES))
+    reservation_hash.merge!(attributes_hash.slice(*Reservation::RESERVATION_EXPECTED_ATTRIBUTES))
     keys_checker = -> { 
       user_hash.keys.sort == USER_EXPECTED_ATTRIBUTES &&
-      (reservation_hash.keys - [:reservation_contacts_attributes]).sort == RESERVATION_EXPECTED_ATTRIBUTES
+      (reservation_hash.keys - [:reservation_contacts_attributes]).sort == Reservation::RESERVATION_EXPECTED_ATTRIBUTES
     }
 
     unless keys_checker.call
